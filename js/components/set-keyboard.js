@@ -2,6 +2,7 @@ import createE from "./create-element";
 
 const setKeyboard = (data, langRu, root, capslock) => {
   data.forEach((element) => setButton(element, langRu, root, capslock));
+  alert(langRu);
 };
 
 const setButton = (data, langRu, root, capslock) => {
@@ -41,6 +42,7 @@ const setButton = (data, langRu, root, capslock) => {
       : capslock
       ? data.key.toUpperCase()
       : data.key;
+
   switch (data.code) {
     case "ArrowLeft":
       button.textContent = "◄";
