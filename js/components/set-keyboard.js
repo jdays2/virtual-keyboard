@@ -1,15 +1,17 @@
 import createE from "./create-element";
+import { capslock } from "./special-event";
+import keys from "./keys";
+import { langRu } from "./set-lang";
 
-const setKeyboard = (data, langRu, root, capslock) => {
-  data.forEach((element) => setButton(element, langRu, root, capslock));
-  alert(langRu);
+const setKeyboard = (root) => {
+  keys.forEach((element) => setButton(element, root));
 };
 
-const setButton = (data, langRu, root, capslock) => {
+const setButton = (element, root) => {
   const button = createE("span", "button");
-  button.setAttribute("data-code", data.code);
+  button.setAttribute("data-code", element.code);
 
-  switch (data.code) {
+  switch (element.code) {
     case "Space":
       button.classList = "button space";
       break;
@@ -32,18 +34,24 @@ const setButton = (data, langRu, root, capslock) => {
       break;
   }
 
-  button.setAttribute("data-code", data.code);
+  button.setAttribute("data-code", element.code);
 
-  button.textContent =
-    langRu && data.keyRu
-      ? capslock
-        ? data.keyRu.toUpperCase()
-        : data.keyRu
-      : capslock
-      ? data.key.toUpperCase()
-      : data.key;
+  switch (langRu) {
+    case true:
+      button.innerHTML = capslock
+        ? element.keyRu
+          ? element.keyRu.toUpperCase()
+          : element.key
+        : element.keyRu
+        ? element.keyRu
+        : element.key;
+      break;
+    default:
+      button.innerHTML = capslock ? element.key.toUpperCase() : element.key;
+      break;
+  }
 
-  switch (data.code) {
+  switch (element.code) {
     case "ArrowLeft":
       button.textContent = "◄";
       break;

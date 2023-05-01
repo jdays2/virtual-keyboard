@@ -1,10 +1,12 @@
 import setKeyboard from "./set-keyboard";
 
-const setLanguage = (langRu, event, keyboard, capslock, keys) => {
-  if (event.altKey && event.ctrlKey) {
+export let langRu = false;
+
+const setLanguage = (event, keyboard) => {
+  if (event.ctrlKey && event.key === "Alt") {
     langRu = !langRu;
     keyboard.innerHTML = "";
-    setKeyboard(keys, langRu, keyboard, capslock);
+    setKeyboard(keyboard);
   }
 };
 

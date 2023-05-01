@@ -1,5 +1,4 @@
 import createE from "./components/create-element";
-import keys from "./components/keys";
 import setKeyboard from "./components/set-keyboard";
 import { specialIvent, shiftOff } from "./components/special-event";
 import corretHandle from "./components/corret-handle";
@@ -8,14 +7,15 @@ import setLanguage from "./components/set-lang";
 const KEYBOARD = createE("div", "root");
 const TEXTAREA = createE("textarea", "input");
 
-let langRu = false;
 let currentPosition = 0;
-let capslock = false;
+
+TEXTAREA.placeholder =
+  "Поле для ввода текста: \n Для смены раскладки leftCTRL + leftAlt";
 
 document.body.appendChild(KEYBOARD);
 document.body.appendChild(TEXTAREA);
 
-setKeyboard(keys, langRu, KEYBOARD); // вызываем функцию только один раз при загрузке страницы
+setKeyboard(KEYBOARD);
 
 document.body.addEventListener("mousedown", (event) => {
   const currentCode = event.target.dataset.code;
@@ -24,7 +24,7 @@ document.body.addEventListener("mousedown", (event) => {
   const button = document.querySelector(`.button[data-code="${currentCode}"]`);
   button.classList.add("active");
 
-  specialIvent(currentCode, langRu, KEYBOARD, TEXTAREA, currentPosition);
+  specialIvent(currentCode, KEYBOARD, TEXTAREA, currentPosition);
 
   corretHandle(TEXTAREA, currentCode, button);
 });
@@ -36,7 +36,7 @@ document.body.addEventListener("mouseup", (event) => {
 
   TEXTAREA.focus();
   if (currentCode === "ShiftRight" || currentCode === "ShiftLeft") {
-    shiftOff(keys, langRu, KEYBOARD, TEXTAREA);
+    shiftOff(KEYBOARD, TEXTAREA);
   }
   const button = document.querySelector(
     `.button[data-code="${event.target.dataset.code}"]`
@@ -50,15 +50,12 @@ document.addEventListener("keydown", (event) => {
   document.activeElement.blur();
   TEXTAREA.focus();
   event.preventDefault();
-
-  specialIvent(currentCode, langRu, KEYBOARD, TEXTAREA, currentPosition);
+  specialIvent(currentCode, KEYBOARD, TEXTAREA, currentPosition);
 
   const button = document.querySelector(`.button[data-code="${event.code}"]`);
   button.classList.add("active");
 
   corretHandle(TEXTAREA, currentCode, button);
-
-  setLanguage(langRu, event, KEYBOARD, capslock, keys);
 });
 
 document.addEventListener("keyup", (event) => {
@@ -68,6 +65,8 @@ document.addEventListener("keyup", (event) => {
   button.classList.remove("active");
 
   if (currentCode === "ShiftRight" || currentCode === "ShiftLeft") {
-    shiftOff(keys, langRu, KEYBOARD, TEXTAREA);
+    shiftOff(KEYBOARD);
   }
+
+  setLanguage(event, KEYBOARD);
 });
