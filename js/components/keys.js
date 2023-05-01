@@ -55,7 +55,7 @@ const keys = [
   { key: "ArrowUp", code: "ArrowUp" },
   { key: "SHIFT", code: "ShiftRight" },
   { key: "CTRL", code: "ControlLeft" },
-  { key: "W", code: "MetaLeft" },
+  { key: "&#128420", code: "MetaLeft" },
   { key: "ALT", code: "AltLeft" },
   { key: " ", code: "Space" },
   { key: "ALT", code: "AltRight" },

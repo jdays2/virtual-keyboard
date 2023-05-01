@@ -1,10 +1,10 @@
 import createE from "./create-element";
 
-const setKeyboard = (data, langRu, capslock, root) => {
-  data.forEach((element) => setButton(element, langRu, capslock, root));
+const setKeyboard = (data, langRu, root, capslock) => {
+  data.forEach((element) => setButton(element, langRu, root, capslock));
 };
 
-const setButton = (data, langRu, caps, root) => {
+const setButton = (data, langRu, root, capslock) => {
   const button = createE("span", "button");
   button.setAttribute("data-code", data.code);
 
@@ -31,15 +31,16 @@ const setButton = (data, langRu, caps, root) => {
       break;
   }
 
+  button.setAttribute("data-code", data.code);
+
   button.textContent =
     langRu && data.keyRu
-      ? caps
+      ? capslock
         ? data.keyRu.toUpperCase()
         : data.keyRu
-      : caps
+      : capslock
       ? data.key.toUpperCase()
       : data.key;
-
   switch (data.code) {
     case "ArrowLeft":
       button.textContent = "◄";
