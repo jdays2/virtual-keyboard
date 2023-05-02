@@ -1,13 +1,16 @@
 import createE from "./create-element";
 import { capslock } from "./special-event";
 import keys from "./keys";
-import { langRu } from "./set-lang";
+
+
+if (localStorage.getItem('langRu')===null) localStorage.setItem("langRu", false);
 
 const setKeyboard = (root) => {
-  keys.forEach((element) => setButton(element, root));
+  let langRu = JSON.parse(localStorage.getItem('langRu'))
+  keys.forEach((element) => setButton(element, root, langRu));
 };
 
-const setButton = (element, root) => {
+const setButton = (element, root, langRu) => {
   const button = createE("span", "button");
   button.setAttribute("data-code", element.code);
 

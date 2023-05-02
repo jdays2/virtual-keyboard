@@ -17,24 +17,31 @@ export const specialIvent = (code, keyboard, textarea, currentPosition) => {
       setKeyboard(keyboard);
       break;
     case "Backspace":
-      textarea.setRangeText(
-        "",
-        textarea.selectionStart - 1,
-        textarea.selectionStart,
-        "end"
-      );
+      if(textarea.value){
+        textarea.setRangeText(
+          "",
+          textarea.selectionStart - 1,
+          textarea.selectionStart,
+          "end"
+        );
+      }
       break;
     case "Delete":
-      textarea.setRangeText(
+      if(textarea.value){
         "",
         textarea.selectionStart,
         textarea.selectionStart + 1,
         "end"
-      );
+      }
       break;
     case "Enter":
-      textarea.value += "\n";
-      currentPosition = textarea.selectionStart;
+      let value = textarea.value;
+      let selectionStart = textarea.selectionStart;
+      let beforeCursor = value.substring(0, selectionStart);
+      let afterCursor = value.substring(selectionStart, value.length);
+      textarea.value = beforeCursor + "\n" + afterCursor;
+      textarea.selectionStart = selectionStart + 1;
+      textarea.selectionEnd = selectionStart + 1;
       break;
     case "ArrowLeft":
       currentPosition = textarea.selectionStart;
@@ -50,9 +57,15 @@ export const specialIvent = (code, keyboard, textarea, currentPosition) => {
         currentPosition = textarea.selectionStart;
       }
       break;
-    case "Tab":
-      textarea.value += "    ";
-      break;
+      case "Tab":
+        const valueTwo = textarea.value;
+        const selectionStartTwo = textarea.selectionStart;
+        const beforeCursorTwo = valueTwo.substring(0, selectionStartTwo);
+        const afterCursorTwo = valueTwo.substring(selectionStartTwo, valueTwo.length);
+        textarea.value = beforeCursorTwo + "    " + afterCursorTwo;
+        textarea.selectionStart = selectionStartTwo + 4;
+        textarea.selectionEnd = selectionStartTwo + 4;
+        break;
     default:
       currentPosition += 1;
   }
