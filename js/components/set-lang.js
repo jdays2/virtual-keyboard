@@ -1,12 +1,13 @@
-import setKeyboard from "./set-keyboard";
+import setKeyboard from './set-keyboard';
 
-let langRu = JSON.parse(localStorage.getItem('langRu'))
+let langRu = JSON.parse(localStorage.getItem('langRu'));
 
-const setLanguage = (event, keyboard) => {
-  if (event.ctrlKey && event.key === "Alt") {
+const setLanguage = (event, KEYBOARD) => {
+  const keyboard = KEYBOARD;
+  if (event.ctrlKey && event.key === 'Alt') {
     langRu = !langRu;
     localStorage.setItem('langRu', langRu);
-    keyboard.innerHTML = "";
+    keyboard.innerHTML = '';
     setKeyboard(keyboard);
   }
   // else {

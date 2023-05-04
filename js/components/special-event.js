@@ -1,84 +1,90 @@
-import setKeyboard from "./set-keyboard";
+import setKeyboard from './set-keyboard';
 
 export let capslock = false;
-export let shift = false
+export let shift = false;
 
-export const specialIvent = (code, keyboard, textarea, currentPosition) => {
+export const specialIvent = (code, KEYBOARD, TEXTAREA, currentPos) => {
+  const bord = KEYBOARD;
+  const textarea = TEXTAREA;
+  let textareaValue = textarea.value;
+  let currentPosition = currentPos;
+  let selectionStart = textarea.selectionStart;
+  let beforeCursor = textareaValue.substring(0, selectionStart);
+  let afterCursor = textareaValue.substring(selectionStart, textareaValue.length);
+
   switch (code) {
-    case "CapsLock":
+    case 'CapsLock':
       capslock = !capslock;
-      keyboard.innerHTML = "";
-      setKeyboard(keyboard);
+      bord.innerHTML = '';
+      setKeyboard(bord);
       break;
-    case "ShiftRight":
-    case "ShiftLeft":
+    case 'ShiftRight':
+    case 'ShiftLeft':
       shift = !shift;
       capslock = !capslock;
-      keyboard.innerHTML = "";
-      setKeyboard(keyboard);
+      bord.innerHTML = '';
+      setKeyboard(bord);
       break;
-    case "Backspace":
-      if(textarea.value){
-        textarea.setRangeText(
-          "",
-          textarea.selectionStart,
-          textarea.selectionStart + 1,
-          "end"
-        );
+    case 'Backspace':
+      if (textarea.value) {
+        textarea.setRangeText('', selectionStart - 1, selectionStart, 'end');
+        selectionStart -= 1;
+        beforeCursor = textareaValue.substring(0, selectionStart);
+        afterCursor = textareaValue.substring(selectionStart, textareaValue.length);
       }
       break;
-    case "Delete":
+    case 'Delete':
       if (textarea.value) {
         textarea.setRangeText(
-          "",
+          '',
           textarea.selectionStart,
           textarea.selectionStart + 1,
-          "end"
+          'end'
         );
+        beforeCursor = textareaValue.substring(0, selectionStart);
+        afterCursor = textareaValue.substring(selectionStart, textareaValue.length);
       }
       break;
-    case "Enter":
-      let value = textarea.value;
-      let selectionStart = textarea.selectionStart;
-      let beforeCursor = value.substring(0, selectionStart);
-      let afterCursor = value.substring(selectionStart, value.length);
-      textarea.value = beforeCursor + "\n" + afterCursor;
-      textarea.selectionStart = selectionStart + 1;
-      textarea.selectionEnd = selectionStart + 1;
+    case 'Enter':
+      textareaValue = beforeCursor + '\n' + afterCursor;
+      textarea.setRangeText('\n', selectionStart, selectionStart, 'end');
+      selectionStart += 1;
+      beforeCursor = textareaValue.substring(0, selectionStart);
+      afterCursor = textareaValue.substring(selectionStart, textareaValue.length);
+      textarea.selectionStart = selectionStart;
+      textarea.selectionEnd = selectionStart;
       break;
-    case "ArrowLeft":
+    case 'ArrowLeft':
       currentPosition = textarea.selectionStart;
       if (currentPosition > 0) {
         textarea.setSelectionRange(currentPosition - 1, currentPosition - 1);
         currentPosition = textarea.selectionStart;
       }
       break;
-    case "ArrowRight":
+    case 'ArrowRight':
       currentPosition = textarea.selectionStart;
       if (currentPosition < textarea.value.length) {
         textarea.setSelectionRange(currentPosition + 1, currentPosition + 1);
         currentPosition = textarea.selectionStart;
       }
       break;
-      case "Tab":
-        const valueTwo = textarea.value;
-        const selectionStartTwo = textarea.selectionStart;
-        const beforeCursorTwo = valueTwo.substring(0, selectionStartTwo);
-        const afterCursorTwo = valueTwo.substring(selectionStartTwo, valueTwo.length);
-        textarea.value = beforeCursorTwo + "    " + afterCursorTwo;
-        textarea.selectionStart = selectionStartTwo + 4;
-        textarea.selectionEnd = selectionStartTwo + 4;
-        break;
+    case 'Tab':
+
+      textarea.value = beforeCursor + '    ' + afterCursor;
+      textarea.selectionStart = selectionStart + 4;
+      textarea.selectionEnd = selectionStart + 4;
+      break;
     default:
       currentPosition += 1;
   }
 };
 
 export const shiftOff = (keyboard) => {
+  const keyboardElement = keyboard;
   if (shift) {
     capslock = !capslock;
     shift = !shift;
-    keyboard.innerHTML = "";
+    keyboardElement.innerHTML = '';
     setKeyboard(keyboard);
   }
 };
