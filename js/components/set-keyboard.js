@@ -1,5 +1,5 @@
 import createE from "./create-element";
-import { capslock } from "./special-event";
+import { capslock, shift } from "./special-event";
 import keys from "./keys";
 
 
@@ -39,19 +39,24 @@ const setButton = (element, root, langRu) => {
 
   button.setAttribute("data-code", element.code);
 
-  switch (langRu) {
-    case true:
-      button.innerHTML = capslock
+  const checkLang = () => {
+    if(langRu){
+      return capslock
         ? element.keyRu
           ? element.keyRu.toUpperCase()
           : element.key
         : element.keyRu
         ? element.keyRu
         : element.key;
-      break;
-    default:
-      button.innerHTML = capslock ? element.key.toUpperCase() : element.key;
-      break;
+    } else {
+      return capslock ? element.key.toUpperCase() : element.key;
+  }}
+ 
+  button.innerHTML = checkLang()
+
+
+  if(shift){
+    button.innerHTML = element?.shift ? element.shift : (checkLang())
   }
 
   switch (element.code) {

@@ -1,17 +1,18 @@
 import setKeyboard from "./set-keyboard";
 
 export let capslock = false;
+export let shift = false
 
 export const specialIvent = (code, keyboard, textarea, currentPosition) => {
   switch (code) {
     case "CapsLock":
       capslock = !capslock;
-
       keyboard.innerHTML = "";
       setKeyboard(keyboard);
       break;
     case "ShiftRight":
     case "ShiftLeft":
+      shift = !shift;
       capslock = !capslock;
       keyboard.innerHTML = "";
       setKeyboard(keyboard);
@@ -20,18 +21,20 @@ export const specialIvent = (code, keyboard, textarea, currentPosition) => {
       if(textarea.value){
         textarea.setRangeText(
           "",
-          textarea.selectionStart - 1,
           textarea.selectionStart,
+          textarea.selectionStart + 1,
           "end"
         );
       }
       break;
     case "Delete":
-      if(textarea.value){
-        "",
-        textarea.selectionStart,
-        textarea.selectionStart + 1,
-        "end"
+      if (textarea.value) {
+        textarea.setRangeText(
+          "",
+          textarea.selectionStart,
+          textarea.selectionStart + 1,
+          "end"
+        );
       }
       break;
     case "Enter":
@@ -72,8 +75,9 @@ export const specialIvent = (code, keyboard, textarea, currentPosition) => {
 };
 
 export const shiftOff = (keyboard) => {
-  if (capslock) {
+  if (shift) {
     capslock = !capslock;
+    shift = !shift;
     keyboard.innerHTML = "";
     setKeyboard(keyboard);
   }
