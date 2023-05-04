@@ -2,14 +2,15 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
-    node: true,
+    node: true
   },
-  extends: "eslint:recommended",
+  extends: ['airbnb-base/legacy', 'eslint:recommended'],
   overrides: [],
-  parser: "@babel/eslint-parser",
+  parser: '@babel/eslint-parser',
   parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    requireConfigFile: false
   },
-  rules: {},
+  rules: {}
 };
